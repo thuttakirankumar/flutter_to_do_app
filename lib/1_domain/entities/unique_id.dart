@@ -26,3 +26,15 @@ class CollectionId extends UniqueId {
       return CollectionId._(id);
     }
 }
+
+class EntryId extends UniqueId {
+   const EntryId._(String value) : super._(value);
+
+    factory EntryId() {
+      return EntryId._(const Uuid().v4());
+    }
+
+    factory EntryId.fromString(String id) {
+      return EntryId._(id);
+    }
+}

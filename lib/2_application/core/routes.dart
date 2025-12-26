@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_to_do_app/1_domain/entities/unique_id.dart';
 import 'package:flutter_to_do_app/2_application/core/go_router_observer.dart';
 import 'package:flutter_to_do_app/2_application/pages/dashboard/dashboard_page.dart';
+import 'package:flutter_to_do_app/2_application/pages/detail/todo_detail_page.dart';
 import 'package:flutter_to_do_app/2_application/pages/home/home_page.dart';
+import 'package:flutter_to_do_app/2_application/pages/overview/overview_page.dart';
 import 'package:flutter_to_do_app/2_application/pages/settings/settings_page.dart';
 import 'package:go_router/go_router.dart';
 
@@ -54,6 +57,29 @@ final routes = GoRouter(
 
           )
       ]),
+
+      GoRoute(
+        name : TodoDetailPage.pageConfig.name,
+        path: '$_basePath/overview/:collectionId',
+        builder: (context, state) {
+         // final collectionId = state.pathParameters['collectionId'] ?? '';
+          return Scaffold(
+            appBar: AppBar(title: Text('Todo Detail'),
+            leading: BackButton(onPressed: (){
+              if(context.canPop()){
+                context.pop();
+              }else{
+                context.goNamed(HomePage.pageConfig.name, pathParameters: {'tab': OverviewPage.pageConfig.name});
+              }
+            },),
+            ),
+            body: TodoDetailPageProvider(
+              collectionId: CollectionId.fromString(state.pathParameters['collectionId'] ?? ''),
+            ),
+          );
+        },
+
+      )
     //  GoRoute(
     //   path: '/home',
     //   builder: (context, state) {
