@@ -10,9 +10,9 @@ class LoadTodoEntriesForCollection implements UseCase<List<EntryId>, CollectionI
   LoadTodoEntriesForCollection({required this.repository});
 
   @override
-  Future<Either<Failure, List<EntryId>>> call(CollectionIdParam params) {
+  Future<Either<Failure, List<EntryId>>> call(CollectionIdParam params) async{
     try {
-      return repository.readToDoEntries(params.collectionId).fold(
+      return await repository.readToDoEntries(params.collectionId).fold(
           (left) => Left(left), (right) => Right(right));
     } on Exception catch (e) {
       return Future.value(Left(

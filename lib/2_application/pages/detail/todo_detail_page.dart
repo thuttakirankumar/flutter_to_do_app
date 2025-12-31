@@ -4,6 +4,9 @@ import 'package:flutter_to_do_app/1_domain/entities/unique_id.dart';
 import 'package:flutter_to_do_app/1_domain/usecases/load_todo_entries_for_collection.dart';
 import 'package:flutter_to_do_app/2_application/core/page_config.dart';
 import 'package:flutter_to_do_app/2_application/pages/detail/bloc/cubit/todo_detail_cubit_cubit.dart';
+import 'package:flutter_to_do_app/2_application/pages/detail/view_states/todo_detail_error.dart';
+import 'package:flutter_to_do_app/2_application/pages/detail/view_states/todo_detail_loaded.dart';
+import 'package:flutter_to_do_app/2_application/pages/detail/view_states/todo_detail_loading.dart';
 
 class TodoDetailPageProvider extends StatelessWidget {
   final CollectionId collectionId;
@@ -36,17 +39,13 @@ class TodoDetailPage extends StatelessWidget {
     return BlocBuilder<TodoDetailCubitCubit, TodoDetailCubitState>(
       builder: (context, state) {
         if (state is TodoDetailCubitLoading) {
-          return const CircularProgressIndicator();
+          return TodoDetailLoading();
         } else if (state is TodoDetailCubitError) {
-          return const Text('Error loading entries');
+          return TodoDetailError();
         } else if (state is TodoDetailCubitLoaded) {
-          return ListView.builder(
-            itemCount: state.entryIds.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(state.entryIds[index].value),
-              );
-            },
+          return TodoDetailLoaded(
+            entryIds: state.entryIds,
+            collectionId: collectionId,
           );
         }
         return const Placeholder();
