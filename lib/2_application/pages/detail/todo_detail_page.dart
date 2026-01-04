@@ -8,8 +8,11 @@ import 'package:flutter_to_do_app/2_application/pages/detail/view_states/todo_de
 import 'package:flutter_to_do_app/2_application/pages/detail/view_states/todo_detail_loaded.dart';
 import 'package:flutter_to_do_app/2_application/pages/detail/view_states/todo_detail_loading.dart';
 
+typedef TodoEntryItemCallback = Function();
+
 class TodoDetailPageProvider extends StatelessWidget {
   final CollectionId collectionId;
+
   const TodoDetailPageProvider({super.key, required this.collectionId,});
 
   @override
@@ -26,7 +29,8 @@ class TodoDetailPageProvider extends StatelessWidget {
 
 class TodoDetailPage extends StatelessWidget {
   final CollectionId collectionId;
-  const TodoDetailPage({super.key, required this.collectionId});
+
+  const TodoDetailPage({super.key, required this.collectionId,});
 
   static const pageConfig = PageConfig(
     icon: Icons.details_rounded,
@@ -45,7 +49,10 @@ class TodoDetailPage extends StatelessWidget {
         } else if (state is TodoDetailCubitLoaded) {
           return TodoDetailLoaded(
             entryIds: state.entryIds,
-            collectionId: collectionId,
+            collectionId: collectionId, todoEntryItemCallback: () {  
+              context.read<TodoDetailCubitCubit>().readToDoEntries();
+            },
+            
           );
         }
         return const Placeholder();

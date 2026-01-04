@@ -20,4 +20,15 @@ class TodoCollection {
     );
   }
 
+  TodoCollection copywith({
+    String? title,
+    TodoColor? color,
+  }) {
+    return TodoCollection(
+      id: id,
+      title: title ?? this.title,
+      color: color ?? this.color,
+    );
+  }
+
 }

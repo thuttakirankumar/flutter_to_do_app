@@ -5,6 +5,8 @@ import 'package:flutter_to_do_app/2_application/core/page_config.dart';
 import 'package:flutter_to_do_app/2_application/pages/overview/bloc/todo_overview_cubit.dart';
 import 'package:flutter_to_do_app/2_application/pages/overview/view_states/todo_overview_loaded.dart';
 
+typedef TodoCollectionItemCallback = Function();
+
 class TodoOverviewPageProvider extends StatelessWidget {
   const TodoOverviewPageProvider({super.key,});
 
@@ -19,7 +21,7 @@ class TodoOverviewPageProvider extends StatelessWidget {
   }
 }
 
-class OverviewPage extends StatelessWidget {
+class OverviewPage extends StatefulWidget {
   const OverviewPage({super.key});
 
   static const pageConfig = PageConfig(
@@ -27,6 +29,12 @@ class OverviewPage extends StatelessWidget {
     name: 'overview',
     child: TodoOverviewPageProvider(),
   );
+
+  @override
+  State<OverviewPage> createState() => _OverviewPageState();
+}
+
+class _OverviewPageState extends State<OverviewPage> {
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +47,10 @@ class OverviewPage extends StatelessWidget {
           } else if (state is TodoOverviewCubitErrorState) {
             return const Center(child: Text('Error loading todo collections'));
           } else if (state is TodoOverviewCubitLoadedState) {
-            return TodoOverviewLoaded(collections: state.todoCollections);
+            return TodoOverviewLoaded(
+              collections: state.todoCollections, todoCollectionItemCallback: () => context.read<TodoOverviewCubit>().readToDoCollections(),
+        
+            );
           } else {
             return const SizedBox.shrink();
           }

@@ -1,5 +1,7 @@
 import 'package:either_dart/either.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_to_do_app/1_domain/entities/todo_collection.dart';
+import 'package:flutter_to_do_app/1_domain/entities/todo_entry.dart';
 import 'package:flutter_to_do_app/1_domain/entities/unique_id.dart';
 import 'package:flutter_to_do_app/1_domain/failures/failures.dart';
 
@@ -33,3 +35,21 @@ class CollectionIdParam extends Params {
   @override
   List<Object?> get props => [collectionId];
 }
+
+class TodoCollectionParams extends Params {
+  final TodoCollection todoCollection;
+
+  TodoCollectionParams({required this.todoCollection});
+  @override
+  List<Object?> get props => [todoCollection];
+}
+
+class TodoEntryParams extends Params {
+  final TodoEntry todoEntry;
+
+  TodoEntryParams({required this.todoEntry});
+  @override
+  List<Object?> get props => [todoEntry];
+}
+
+ 

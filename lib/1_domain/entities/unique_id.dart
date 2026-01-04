@@ -42,3 +42,4 @@ class EntryId extends UniqueId {
       return EntryId._(id);
     }
 }
+

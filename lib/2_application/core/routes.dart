@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_to_do_app/1_domain/entities/unique_id.dart';
 import 'package:flutter_to_do_app/2_application/core/go_router_observer.dart';
+import 'package:flutter_to_do_app/2_application/pages/create_todo_collection/create_todo_collection_page.dart';
+import 'package:flutter_to_do_app/2_application/pages/create_todo_entry/create_todo_entry_page.dart';
 import 'package:flutter_to_do_app/2_application/pages/dashboard/dashboard_page.dart';
 import 'package:flutter_to_do_app/2_application/pages/detail/todo_detail_page.dart';
 import 'package:flutter_to_do_app/2_application/pages/home/cubit/navigation_todo_cubit.dart';
@@ -61,6 +63,56 @@ final routes = GoRouter(
           ),
         ),
       ],
+    ),
+
+    GoRoute(
+      path: '$_basePath/overview/${CreateTodoCollectionPage.pageConfig.name}',
+      name: CreateTodoCollectionPage.pageConfig.name,
+      builder: (context, state) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Text('Create Todo Collection'),
+            leading: BackButton(
+              onPressed: () {
+                if (context.canPop()) {
+                  context.pop();
+                } else {
+                  context.goNamed(
+                    HomePage.pageConfig.name,
+                    pathParameters: {'tab': OverviewPage.pageConfig.name},
+                  );
+                }
+              },
+            ),
+          ),
+          body: SafeArea(child: CreateTodoCollectionPageProvider(todoCollectionItemCallback: state.extra as TodoCollectionItemCallback)),
+        );
+      },
+    ),
+
+     GoRoute(
+      path: '$_basePath/overview/${CreateTodoEntryPage.pageConfig.name}',
+      name: CreateTodoEntryPage.pageConfig.name,
+      builder: (context, state) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Text('Create Todo Entry'),
+            leading: BackButton(
+              onPressed: () {
+                if (context.canPop()) {
+                  context.pop();
+                } else {
+                  context.goNamed(
+                    HomePage.pageConfig.name,
+                    pathParameters: {'tab': OverviewPage.pageConfig.name},
+                  );
+                }
+              },
+            ),
+          ),
+          body: SafeArea(child: CreateToDoEntryPageProvider(createTodoEntryPageExtra: state.extra as CreateTodoEntryPageExtra)),
+        );
+      },
     ),
 
     GoRoute(

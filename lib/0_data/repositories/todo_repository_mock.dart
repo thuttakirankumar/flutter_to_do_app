@@ -40,8 +40,12 @@ class TodoRepositoryMock implements TodoRepository {
   ) {
     try {
       final startIndex = int.parse(collectionId.value) * 10;
+      int endIndex = startIndex + 10;
+      if(toDoEntries.length < endIndex) {
+         endIndex = toDoEntries.length;
+      }
       final entries = toDoEntries
-          .sublist(startIndex, startIndex + 10)
+          .sublist(startIndex, endIndex)
           .map((entry) => entry.id)
           .toList();
       return Future.delayed(Duration(milliseconds: 200), () => Right(entries));
@@ -70,5 +74,22 @@ class TodoRepositoryMock implements TodoRepository {
     final updateEntry = entryToUpdate.copyWith(isCompleted: !entryToUpdate.isCompleted);
     toDoEntries[index] = updateEntry;
     return Future.delayed(Duration(milliseconds: 200), () => Right(updateEntry));
+  }
+  
+  @override
+  Future<Either<Failure, bool>> createToDoCollection(TodoCollection todoCollection) {
+    final collectionToAdd = TodoCollection(
+      id: CollectionId.fromString(toDoCollections.length.toString()),
+      title: todoCollection.title,
+      color: todoCollection.color,
+    );
+    toDoCollections.add(collectionToAdd);
+    return Future.delayed(Duration(milliseconds: 200), () => Right(true));
+  }
+  
+  @override
+  Future<Either<Failure, bool>> createTodoEntry(TodoEntry todoEntry) {
+    toDoEntries.add(todoEntry);
+    return Future.delayed(Duration(milliseconds: 200), () => Right(true));
   }
 }
