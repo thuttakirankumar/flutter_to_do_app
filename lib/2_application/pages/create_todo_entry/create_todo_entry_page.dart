@@ -77,8 +77,9 @@ class _CreateTodoEntryPageState extends State<CreateTodoEntryPage> {
             ElevatedButton(
               onPressed: () {
                 if (_formKey.currentState?.validate() == true) {
-                  context.read<CreateTodoEntryPageCubit>().submit();
-                  widget.createTodoEntryPageExtra.todoEntryItemCallback();
+                  context.read<CreateTodoEntryPageCubit>().submit().then((_) {
+                    widget.createTodoEntryPageExtra.todoEntryItemCallback();
+                  });
                   context.pop();
                 }
                

@@ -13,6 +13,7 @@ class CreateTodoEntry extends UseCase<bool, TodoEntryParams> {
     try {
       final result = await repository.createTodoEntry(
         params.todoEntry,
+        params.collectionId
       );
       return result.fold(
         (failure) => Left(failure),

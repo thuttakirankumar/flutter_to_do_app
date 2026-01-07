@@ -16,19 +16,22 @@ class TodoRepositoryMock implements TodoRepository {
     ),
   );
 
-   final toDoCollections = List.generate(
-      10,
-      (index) => TodoCollection(
-        id: CollectionId.fromString('$index'),
-        title: 'Collection $index',
-        color: TodoColor(colorIndex: index % TodoColor.predefinedColors.length),
-      ),
-    );
+  final toDoCollections = List.generate(
+    10,
+    (index) => TodoCollection(
+      id: CollectionId.fromString('$index'),
+      title: 'Collection $index',
+      color: TodoColor(colorIndex: index % TodoColor.predefinedColors.length),
+    ),
+  );
 
   @override
   Future<Either<Failure, List<TodoCollection>>> readToDoCollections() {
-    try{
-      return Future.delayed(Duration(milliseconds: 200), () => Right(toDoCollections));
+    try {
+      return Future.delayed(
+        Duration(milliseconds: 200),
+        () => Right(toDoCollections),
+      );
     } on Exception catch (e) {
       return Future.value(Left(ServerFailure(stackTrace: e.toString())));
     }
@@ -41,13 +44,17 @@ class TodoRepositoryMock implements TodoRepository {
     try {
       final startIndex = int.parse(collectionId.value) * 10;
       int endIndex = startIndex + 10;
-      if(toDoEntries.length < endIndex) {
-         endIndex = toDoEntries.length;
+      if (toDoEntries.length < endIndex) {
+        endIndex = toDoEntries.length;
       }
-      final entries = toDoEntries
-          .sublist(startIndex, endIndex)
-          .map((entry) => entry.id)
-          .toList();
+      List<EntryId> entries = [];
+
+      if (startIndex < toDoEntries.length) {
+        entries = toDoEntries
+            .sublist(startIndex, endIndex)
+            .map((e) => e.id)
+            .toList();
+      }
       return Future.delayed(Duration(milliseconds: 200), () => Right(entries));
     } on Exception catch (e) {
       return Future.value(Left(ServerFailure(stackTrace: e.toString())));
@@ -66,18 +73,28 @@ class TodoRepositoryMock implements TodoRepository {
       return Future.value(Left(ServerFailure(stackTrace: e.toString())));
     }
   }
-  
+
   @override
-  Future<Either<Failure, TodoEntry>> upadteToDoEntry(CollectionId collectionId, EntryId entryId) {
+  Future<Either<Failure, TodoEntry>> upadteToDoEntry(
+    CollectionId collectionId,
+    EntryId entryId,
+  ) {
     final index = toDoEntries.indexWhere((e) => e.id == entryId);
     final entryToUpdate = toDoEntries[index];
-    final updateEntry = entryToUpdate.copyWith(isCompleted: !entryToUpdate.isCompleted);
+    final updateEntry = entryToUpdate.copyWith(
+      isCompleted: !entryToUpdate.isCompleted,
+    );
     toDoEntries[index] = updateEntry;
-    return Future.delayed(Duration(milliseconds: 200), () => Right(updateEntry));
+    return Future.delayed(
+      Duration(milliseconds: 200),
+      () => Right(updateEntry),
+    );
   }
-  
+
   @override
-  Future<Either<Failure, bool>> createToDoCollection(TodoCollection todoCollection) {
+  Future<Either<Failure, bool>> createToDoCollection(
+    TodoCollection todoCollection,
+  ) {
     final collectionToAdd = TodoCollection(
       id: CollectionId.fromString(toDoCollections.length.toString()),
       title: todoCollection.title,
@@ -86,9 +103,9 @@ class TodoRepositoryMock implements TodoRepository {
     toDoCollections.add(collectionToAdd);
     return Future.delayed(Duration(milliseconds: 200), () => Right(true));
   }
-  
+
   @override
-  Future<Either<Failure, bool>> createTodoEntry(TodoEntry todoEntry) {
+  Future<Either<Failure, bool>> createTodoEntry(TodoEntry todoEntry, CollectionId collectionId) {
     toDoEntries.add(todoEntry);
     return Future.delayed(Duration(milliseconds: 200), () => Right(true));
   }

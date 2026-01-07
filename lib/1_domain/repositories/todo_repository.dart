@@ -16,5 +16,5 @@ abstract class TodoRepository {
 
   Future<Either<Failure, bool>> createToDoCollection(TodoCollection todoCollection);
 
-  Future<Either<Failure, bool>> createTodoEntry(TodoEntry todoEntry);
+  Future<Either<Failure, bool>> createTodoEntry(TodoEntry todoEntry, CollectionId collectionId);
 }

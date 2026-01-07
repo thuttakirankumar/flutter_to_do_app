@@ -98,8 +98,7 @@ class _CreateTodoCollectionPageState extends State<CreateTodoCollectionPage> {
             ElevatedButton(
               onPressed: () {
                 if (_formKey.currentState?.validate() == true) {
-                  context.read<CreateTodoCollectionPageCubit>().submit();
-                  widget.todoCollectionItemCallback();
+                  context.read<CreateTodoCollectionPageCubit>().submit().then((_) => widget.todoCollectionItemCallback());
                   context.pop();
                 }
               },

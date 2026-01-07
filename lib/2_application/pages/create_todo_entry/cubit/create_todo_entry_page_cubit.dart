@@ -31,12 +31,13 @@ class CreateTodoEntryPageCubit extends Cubit<CreateTodoEntryPageState> {
 
   }
 
-  void submit() async {
+  Future<void> submit() async {
     final todoEntry = TodoEntry.empty().copyWith(
       description: state.description?.value ?? '',
     );
 
     await createTodoEntry.call(TodoEntryParams(
+      collectionId: collectionId,
       todoEntry: todoEntry,
     ));
 

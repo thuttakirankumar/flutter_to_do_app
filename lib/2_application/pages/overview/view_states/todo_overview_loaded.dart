@@ -38,7 +38,7 @@ class TodoOverviewLoaded extends StatelessWidget {
                         .selectedTodoCollectionChanged(collection.id);
         
                     if (Breakpoints.small.isActive(context)) {
-                      context.goNamed(
+                      context.pushNamed(
                         TodoDetailPage.pageConfig.name,
                         pathParameters: {'collectionId': collection.id.value},
                       );
@@ -60,8 +60,13 @@ class TodoOverviewLoaded extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: FloatingActionButton(
-              onPressed: () {
+              onPressed: () async {
                 context.pushNamed(CreateTodoCollectionPage.pageConfig.name, extra: todoCollectionItemCallback);
+              // if(result == true){
+              //   todoCollectionItemCallback();
+              //   }
+
+
               },
               child:  Icon(CreateTodoCollectionPage.pageConfig.icon),
             ),
